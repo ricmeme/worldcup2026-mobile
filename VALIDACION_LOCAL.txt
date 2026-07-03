@@ -1,0 +1,20 @@
+index.html: OK
+styles.css: OK
+app.js: OK
+manifest.webmanifest: OK
+sw.js: OK
+data/schedule.json: OK
+manifest.webmanifest JSON: OK
+Carga schedule.json: OK (104 partidos)
+Banderas locales: OK (48 PNG)
+Iconos PWA: OK (9 PNG)
+node --check app.js: OK
+logic tests anti falsos EN VIVO: OK
+logic tests OK
+Servidor local index.html: OK (HTTP 200)
+HTTP manifest.webmanifest: 200
+HTTP sw.js: 200
+HTTP data/schedule.json: 200
+HTTP icons/icon-192.png: 200
+API ESPN externa: NO validada desde contenedor por DNS/internet no disponible; la función fetch/merge/fallback queda implementada y probada con lógica local.
+Android real / instalación PWA en S21 Ultra: no validado en contenedor; se entrega guía paso a paso con GitHub Pages gratis.
