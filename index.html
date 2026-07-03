@@ -103,9 +103,14 @@
           <label class="switch-line"><input id="favoriteAlertsCheck" type="checkbox" /> Alertas sólo de mi favorito</label>
           <label>Intervalo de actualización</label>
           <select id="refreshInterval">
+            <option value="1000">1 segundo</option>
+            <option value="2000">2 segundos</option>
+            <option value="3000">3 segundos</option>
+            <option value="5000">5 segundos</option>
+            <option value="10000">10 segundos</option>
             <option value="15000">15 segundos</option>
             <option value="30000">30 segundos</option>
-            <option value="60000">1 minuto</option>
+            <option value="60000">60 segundos</option>
             <option value="0">Manual</option>
           </select>
           <button id="exportIcsBtn" class="primary wide">Exportar calendario .ics</button>
