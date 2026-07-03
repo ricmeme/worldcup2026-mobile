@@ -1,4 +1,4 @@
-const CACHE = 'worldcup2026-mobile-v1';
+const CACHE = 'worldcup2026-mobile-v2';
 const ASSETS = [
   './',
   './index.html',
