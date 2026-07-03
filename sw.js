@@ -1,9 +1,10 @@
-const CACHE = 'worldcup2026-mobile-v3';
+const CACHE = 'worldcup2026-mobile-v4';
 const ASSETS = [
   './',
   './index.html',
   './styles.css',
   './app.js',
+  './mobile-fixes.js',
   './manifest.webmanifest',
   './favicon.png',
   './data/schedule.json',
