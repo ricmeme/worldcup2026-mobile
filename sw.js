@@ -1,4 +1,4 @@
-const CACHE = 'worldcup2026-mobile-v7';
+const CACHE = 'worldcup2026-mobile-v8';
 
 // Cachear sólo archivos críticos que existen con seguridad en el repo.
 // No cacheamos banderas PNG porque la app móvil usa emojis robustos como banderas;
@@ -9,6 +9,7 @@ const ASSETS = [
   './styles.css',
   './app.js',
   './mobile-fixes.js',
+  './mobile-notifications.js',
   './manifest.webmanifest',
   './favicon.png',
   './data/schedule.json',
@@ -54,6 +55,19 @@ self.addEventListener('fetch', event => {
         caches.open(CACHE).then(cache => cache.put(event.request, copy));
         return response;
       }).catch(() => cached);
+    })
+  );
+});
+
+self.addEventListener('notificationclick', event => {
+  event.notification.close();
+  const targetUrl = event.notification.data?.url || './index.html';
+  event.waitUntil(
+    clients.matchAll({type:'window', includeUncontrolled:true}).then(clientList => {
+      for (const client of clientList) {
+        if ('focus' in client) return client.focus();
+      }
+      if (clients.openWindow) return clients.openWindow(targetUrl);
     })
   );
 });
