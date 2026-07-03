@@ -1,0 +1,105 @@
+match_id,date,time_CLT,team1,team2,stage,city,score_team1,score_team2
+1,2026-06-11,15:00,México,Sudáfrica,Grupo A,Ciudad de México,-,-
+2,2026-06-11,22:00,Corea del Sur,Chequia,Grupo A,Guadalajara,-,-
+3,2026-06-12,15:00,Canadá,Bosnia y Herzegovina,Grupo B,Toronto,-,-
+4,2026-06-12,21:00,Estados Unidos,Paraguay,Grupo D,Los Ángeles,-,-
+5,2026-06-13,21:00,Haití,Escocia,Grupo C,Boston,-,-
+6,2026-06-13,24:00,Australia,Türkiye,Grupo D,Vancouver,-,-
+7,2026-06-13,18:00,Brasil,Marruecos,Grupo C,Nueva York/Nueva Jersey,-,-
+8,2026-06-13,15:00,Catar,Suiza,Grupo B,San Francisco Bay Area,-,-
+9,2026-06-14,19:00,Costa de Marfil,Ecuador,Grupo E,Filadelfia,-,-
+10,2026-06-14,13:00,Alemania,Curazao,Grupo E,Houston,-,-
+11,2026-06-14,16:00,Países Bajos,Japón,Grupo F,Dallas,-,-
+12,2026-06-14,22:00,Suecia,Túnez,Grupo F,Monterrey,-,-
+13,2026-06-15,18:00,Arabia Saudí,Uruguay,Grupo H,Miami,-,-
+14,2026-06-15,12:00,España,Cabo Verde,Grupo H,Atlanta,-,-
+15,2026-06-15,21:00,Irán,Nueva Zelanda,Grupo G,Los Ángeles,-,-
+16,2026-06-15,15:00,Bélgica,Egipto,Grupo G,Seattle,-,-
+17,2026-06-16,15:00,Francia,Senegal,Grupo I,Nueva York/Nueva Jersey,-,-
+18,2026-06-16,18:00,Irak,Noruega,Grupo I,Boston,-,-
+19,2026-06-16,21:00,Argentina,Argelia,Grupo J,Kansas City,-,-
+20,2026-06-16,24:00,Austria,Jordania,Grupo J,San Francisco Bay Area,-,-
+21,2026-06-17,19:00,Ghana,Panamá,Grupo L,Toronto,-,-
+22,2026-06-17,16:00,Inglaterra,Croacia,Grupo L,Dallas,-,-
+23,2026-06-17,13:00,Portugal,Congo DR,Grupo K,Houston,-,-
+24,2026-06-17,22:00,Uzbekistán,Colombia,Grupo K,Ciudad de México,-,-
+25,2026-06-18,12:00,Chequia,Sudáfrica,Grupo A,Atlanta,-,-
+26,2026-06-18,15:00,Suiza,Bosnia y Herzegovina,Grupo B,Los Ángeles,-,-
+27,2026-06-18,18:00,Canadá,Catar,Grupo B,Vancouver,-,-
+28,2026-06-18,21:00,México,Corea del Sur,Grupo A,Guadalajara,-,-
+29,2026-06-19,21:00,Brasil,Haití,Grupo C,Filadelfia,-,-
+30,2026-06-19,18:00,Escocia,Marruecos,Grupo C,Boston,-,-
+31,2026-06-19,23:00,Türkiye,Paraguay,Grupo D,San Francisco Bay Area,-,-
+32,2026-06-19,15:00,Estados Unidos,Australia,Grupo D,Seattle,-,-
+33,2026-06-20,16:00,Alemania,Costa de Marfil,Grupo E,Toronto,-,-
+34,2026-06-20,20:00,Ecuador,Curazao,Grupo E,Kansas City,-,-
+35,2026-06-20,13:00,Países Bajos,Suecia,Grupo F,Houston,-,-
+36,2026-06-20,24:00,Túnez,Japón,Grupo F,Monterrey,-,-
+37,2026-06-21,18:00,Uruguay,Cabo Verde,Grupo H,Miami,-,-
+38,2026-06-21,12:00,España,Arabia Saudí,Grupo H,Atlanta,-,-
+39,2026-06-21,15:00,Bélgica,Irán,Grupo G,Los Ángeles,-,-
+40,2026-06-21,21:00,Nueva Zelanda,Egipto,Grupo G,Vancouver,-,-
+41,2026-06-22,20:00,Noruega,Senegal,Grupo I,Nueva York/Nueva Jersey,-,-
+42,2026-06-22,17:00,Francia,Irak,Grupo I,Filadelfia,-,-
+43,2026-06-22,13:00,Argentina,Austria,Grupo J,Dallas,-,-
+44,2026-06-22,23:00,Jordania,Argelia,Grupo J,San Francisco Bay Area,-,-
+45,2026-06-23,16:00,Inglaterra,Ghana,Grupo L,Boston,-,-
+46,2026-06-23,19:00,Panamá,Croacia,Grupo L,Toronto,-,-
+47,2026-06-23,13:00,Portugal,Uzbekistán,Grupo K,Houston,-,-
+48,2026-06-23,22:00,Colombia,Congo DR,Grupo K,Guadalajara,-,-
+49,2026-06-24,18:00,Escocia,Brasil,Grupo C,Miami,-,-
+50,2026-06-24,18:00,Marruecos,Haití,Grupo C,Atlanta,-,-
+51,2026-06-24,15:00,Suiza,Canadá,Grupo B,Vancouver,-,-
+52,2026-06-24,15:00,Bosnia y Herzegovina,Catar,Grupo B,Seattle,-,-
+53,2026-06-24,21:00,Chequia,México,Grupo A,Ciudad de México,-,-
+54,2026-06-24,21:00,Sudáfrica,Corea del Sur,Grupo A,Monterrey,-,-
+55,2026-06-25,16:00,Curazao,Costa de Marfil,Grupo E,Filadelfia,-,-
+56,2026-06-25,16:00,Ecuador,Alemania,Grupo E,Nueva York/Nueva Jersey,-,-
+57,2026-06-25,19:00,Japón,Suecia,Grupo F,Dallas,-,-
+58,2026-06-25,19:00,Túnez,Países Bajos,Grupo F,Kansas City,-,-
+59,2026-06-25,22:00,Türkiye,Estados Unidos,Grupo D,Los Ángeles,-,-
+60,2026-06-25,22:00,Paraguay,Australia,Grupo D,San Francisco Bay Area,-,-
+61,2026-06-26,15:00,Noruega,Francia,Grupo I,Boston,-,-
+62,2026-06-26,15:00,Senegal,Irak,Grupo I,Toronto,-,-
+63,2026-06-26,23:00,Egipto,Irán,Grupo G,Seattle,-,-
+64,2026-06-26,23:00,Nueva Zelanda,Bélgica,Grupo G,Vancouver,-,-
+65,2026-06-26,20:00,Cabo Verde,Arabia Saudí,Grupo H,Houston,-,-
+66,2026-06-26,20:00,Uruguay,España,Grupo H,Guadalajara,-,-
+67,2026-06-27,17:00,Panamá,Inglaterra,Grupo L,Nueva York/Nueva Jersey,-,-
+68,2026-06-27,17:00,Croacia,Ghana,Grupo L,Filadelfia,-,-
+69,2026-06-27,22:00,Argelia,Austria,Grupo J,Kansas City,-,-
+70,2026-06-27,22:00,Jordania,Argentina,Grupo J,Dallas,-,-
+71,2026-06-27,19:30,Colombia,Portugal,Grupo K,Miami,-,-
+72,2026-06-27,19:30,Congo DR,Uzbekistán,Grupo K,Atlanta,-,-
+73,2026-06-28,15:00,Sudáfrica,Canadá,Ronda de 32,Los Ángeles,-,-
+74,2026-06-29,16:30,Alemania,Paraguay,Ronda de 32,Boston,-,-
+75,2026-06-29,21:00,Países Bajos,Marruecos,Ronda de 32,Monterrey,-,-
+76,2026-06-29,13:00,Brasil,Japón,Ronda de 32,Houston,-,-
+77,2026-06-30,17:00,Francia,Suecia,Ronda de 32,Nueva York/Nueva Jersey,-,-
+78,2026-06-30,13:00,Costa de Marfil,Noruega,Ronda de 32,Dallas,-,-
+79,2026-06-30,21:00,México,Ecuador,Ronda de 32,Ciudad de México,-,-
+80,2026-07-01,12:00,Inglaterra,RD Congo,Ronda de 32,Atlanta,-,-
+81,2026-07-01,20:00,Estados Unidos,Bosnia y Herzegovina,Ronda de 32,San Francisco Bay Area,-,-
+82,2026-07-01,16:00,Bélgica,Senegal,Ronda de 32,Seattle,-,-
+83,2026-07-02,19:00,Portugal,Croacia,Ronda de 32,Toronto,-,-
+84,2026-07-02,15:00,España,Austria,Ronda de 32,Los Ángeles,-,-
+85,2026-07-02,23:00,Suiza,Argelia,Ronda de 32,Vancouver,-,-
+86,2026-07-03,18:00,Argentina,Cabo Verde,Ronda de 32,Miami,-,-
+87,2026-07-03,21:30,Colombia,Ghana,Ronda de 32,Kansas City,-,-
+88,2026-07-03,14:00,Australia,Egipto,Ronda de 32,Dallas,-,-
+89,2026-07-04,17:00,Paraguay,Francia,Octavos de final,Filadelfia,-,-
+90,2026-07-04,13:00,Canadá,Marruecos,Octavos de final,Houston,-,-
+91,2026-07-05,16:00,Brasil,Noruega,Octavos de final,Nueva York/Nueva Jersey,-,-
+92,2026-07-05,20:00,México,Inglaterra,Octavos de final,Ciudad de México,-,-
+93,2026-07-06,15:00,Ganador del Partido 83,Ganador del Partido 84,Octavos de final,Dallas,-,-
+94,2026-07-06,20:00,Estados Unidos,Bélgica,Octavos de final,Seattle,-,-
+95,2026-07-07,12:00,Ganador del Partido 86,Ganador del Partido 88,Octavos de final,Atlanta,-,-
+96,2026-07-07,16:00,Ganador del Partido 85,Ganador del Partido 87,Octavos de final,Vancouver,-,-
+97,2026-07-09,16:00,Ganador del Partido 89,Ganador del Partido 90,Cuartos de final,Boston,-,-
+98,2026-07-10,15:00,Ganador del Partido 93,Ganador del Partido 94,Cuartos de final,Los Ángeles,-,-
+99,2026-07-11,17:00,Ganador del Partido 91,Ganador del Partido 92,Cuartos de final,Miami,-,-
+100,2026-07-11,21:00,Ganador del Partido 95,Ganador del Partido 96,Cuartos de final,Kansas City,-,-
+101,2026-07-14,15:00,Ganador del Partido 97,Ganador del Partido 98,Semifinal,Dallas,-,-
+102,2026-07-15,15:00,Ganador del Partido 99,Ganador del Partido 100,Semifinal,Atlanta,-,-
+103,2026-07-18,17:00,Perdedor del Partido 101,Perdedor del Partido 102,Tercer puesto,Miami,-,-
+104,2026-07-19,15:00,Ganador del Partido 101,Ganador del Partido 102,Final,Nueva York/Nueva Jersey,-,-
