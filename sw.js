@@ -1,4 +1,4 @@
-const CACHE = 'worldcup2026-mobile-v5';
+const CACHE = 'worldcup2026-mobile-v6';
 
 // Cachear sólo archivos críticos que existen con seguridad en el repo.
 // No cacheamos banderas PNG porque la app móvil usa emojis robustos como banderas;
