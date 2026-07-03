@@ -113,6 +113,24 @@
             <option value="60000">60 segundos</option>
             <option value="0">Manual</option>
           </select>
+
+          <h2 class="mt">Notificaciones Android</h2>
+          <label class="switch-line"><input id="notificationsCheck" type="checkbox" /> Habilitar notificaciones emergentes</label>
+          <label class="switch-line"><input id="notifyGoalsCheck" type="checkbox" /> Avisar goles</label>
+          <label class="switch-line"><input id="notifyStartCheck" type="checkbox" /> Avisar inicio de partido</label>
+          <label class="switch-line"><input id="notifyEndCheck" type="checkbox" /> Avisar final de partido</label>
+          <label>Sonido de gol</label>
+          <select id="goalSoundSelect">
+            <option value="latam">Relato latino intenso</option>
+            <option value="estadio">Grito de estadio</option>
+            <option value="radial">Estilo radial chileno</option>
+            <option value="neutro">Neutro corto</option>
+          </select>
+          <label class="switch-line"><input id="keepAwakeCheck" type="checkbox" /> Mantener pantalla activa mientras la app esté abierta</label>
+          <p id="notificationSupportText" class="muted"></p>
+          <button id="testNotificationBtn" class="secondary wide">Probar notificación</button>
+          <button id="testGoalSoundBtn" class="secondary wide">Probar sonido de gol</button>
+
           <button id="exportIcsBtn" class="primary wide">Exportar calendario .ics</button>
           <button id="clearCacheBtn" class="secondary wide">Limpiar cache local</button>
         </div>
@@ -132,5 +150,6 @@
   <script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js"));}</script>
   <script src="app.js"></script>
   <script src="mobile-fixes.js"></script>
+  <script src="mobile-notifications.js"></script>
 </body>
 </html>
