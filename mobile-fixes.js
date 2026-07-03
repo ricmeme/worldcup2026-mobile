@@ -11,6 +11,8 @@ const WC26_FLAG_EMOJI = {
 };
 
 let wc26HistoricalHydrated = false;
+let wc26ApiStats = {range:'-', events:0, matched:0};
+const wc26OriginalUpdateStatus = updateStatus;
 
 (function injectMobileFixStyles(){
   const css = `.flag-emoji{width:24px;height:18px;display:inline-flex;align-items:center;justify-content:center;font-size:18px;line-height:1;filter:saturate(1.1)}.selected-round{width:min(86vw,360px)}.bracket-board{min-width:0}.round-col.selected-round{max-width:100%}`;
@@ -18,6 +20,16 @@ let wc26HistoricalHydrated = false;
   style.textContent = css;
   document.head.appendChild(style);
 })();
+
+updateStatus = function(){
+  wc26OriginalUpdateStatus();
+  const api = $('apiStatus');
+  if(api && state.dataSource === 'ESPN'){
+    api.textContent = `API: ESPN · ${wc26ApiStats.matched}/${wc26ApiStats.events}`;
+    api.title = `Eventos ESPN leídos: ${wc26ApiStats.events}; partidos del fixture actualizados: ${wc26ApiStats.matched}; rango: ${wc26ApiStats.range}`;
+    if(wc26ApiStats.events > 0 && wc26ApiStats.matched === 0) api.className = 'pill warn';
+  }
+};
 
 function wc26FlagEmoji(team){
   return WC26_FLAG_EMOJI[clean(team)] || '';
@@ -49,17 +61,7 @@ normalizeEspnEvent = function(ev){
   const teamB = espnTeamToEs(b);
   const winnerRaw = a.winner ? teamA : (b.winner ? teamB : '');
   const loserRaw = a.winner ? teamB : (b.winner ? teamA : '');
-  return {
-    teamA,
-    teamB,
-    scoreA: clean(a.score || '-'),
-    scoreB: clean(b.score || '-'),
-    rawStatus,
-    completed: !!st.completed,
-    winnerTeam: winnerRaw,
-    loserTeam: loserRaw,
-    date: ev.date
-  };
+  return {teamA, teamB, scoreA:clean(a.score || '-'), scoreB:clean(b.score || '-'), rawStatus, completed:!!st.completed, winnerTeam:winnerRaw, loserTeam:loserRaw, date:ev.date};
 };
 
 function wc26DateToYmd(date){
@@ -68,14 +70,12 @@ function wc26DateToYmd(date){
   const d = String(date.getDate()).padStart(2,'0');
   return `${y}${m}${d}`;
 }
-
 function wc26YmdDash(date){
   const y = date.getFullYear();
   const m = String(date.getMonth()+1).padStart(2,'0');
   const d = String(date.getDate()).padStart(2,'0');
   return `${y}-${m}-${d}`;
 }
-
 function wc26DateRange(startDash, endDash){
   const out = [];
   const start = new Date(`${startDash}T12:00:00-04:00`);
@@ -91,7 +91,6 @@ fetchEspnWindow = async function(){
   const tournamentEnd = '2026-07-19';
   let fromDash;
   let toDash;
-
   if (!wc26HistoricalHydrated && todayDash >= tournamentStart) {
     fromDash = tournamentStart;
     const plus8 = wc26YmdDash(addDays(today, 8));
@@ -101,7 +100,6 @@ fetchEspnWindow = async function(){
     const plus8 = wc26YmdDash(addDays(today, 8));
     toDash = plus8 > tournamentEnd ? tournamentEnd : plus8;
   }
-
   const dates = wc26DateRange(fromDash, toDash);
   const events = [];
   for (const d of dates) {
@@ -112,60 +110,38 @@ fetchEspnWindow = async function(){
     (data.events || []).forEach(ev => events.push(ev));
   }
   wc26HistoricalHydrated = true;
+  wc26ApiStats.range = `${fromDash} → ${toDash}`;
+  wc26ApiStats.events = events.length;
   return events.map(normalizeEspnEvent).filter(Boolean);
 };
 
-function wc26NumericScore(value){
-  const n = Number(String(value).replace(',', '.'));
-  return Number.isFinite(n) ? n : null;
-}
-
-function wc26WinnerFromScore(m){
-  const s1 = wc26NumericScore(m.score_team1);
-  const s2 = wc26NumericScore(m.score_team2);
-  if (s1 === null || s2 === null || s1 === s2) return '';
-  return s1 > s2 ? clean(m.team1) : clean(m.team2);
-}
-
-function wc26LoserFromScore(m){
-  const s1 = wc26NumericScore(m.score_team1);
-  const s2 = wc26NumericScore(m.score_team2);
-  if (s1 === null || s2 === null || s1 === s2) return '';
-  return s1 < s2 ? clean(m.team1) : clean(m.team2);
-}
-
-function wc26ResolvedWinner(m){
-  if (!m || normalizeStatus(null, m) !== 'final') return '';
-  return clean(m.api_winner) || wc26WinnerFromScore(m);
-}
-
-function wc26ResolvedLoser(m){
-  if (!m || normalizeStatus(null, m) !== 'final') return '';
-  return clean(m.api_loser) || wc26LoserFromScore(m);
-}
-
+function wc26NumericScore(value){ const n = Number(String(value).replace(',', '.')); return Number.isFinite(n) ? n : null; }
+function wc26WinnerFromScore(m){ const s1=wc26NumericScore(m.score_team1), s2=wc26NumericScore(m.score_team2); if(s1===null||s2===null||s1===s2)return ''; return s1>s2 ? clean(m.team1) : clean(m.team2); }
+function wc26LoserFromScore(m){ const s1=wc26NumericScore(m.score_team1), s2=wc26NumericScore(m.score_team2); if(s1===null||s2===null||s1===s2)return ''; return s1<s2 ? clean(m.team1) : clean(m.team2); }
+function wc26ResolvedWinner(m){ if(!m || normalizeStatus(null, m) !== 'final') return ''; return clean(m.api_winner) || wc26WinnerFromScore(m); }
+function wc26ResolvedLoser(m){ if(!m || normalizeStatus(null, m) !== 'final') return ''; return clean(m.api_loser) || wc26LoserFromScore(m); }
 function wc26ApplyKnockoutProgression(matches){
   const byId = Object.fromEntries(matches.map(m => [String(m.match_id), m]));
   Object.entries(KNOCKOUT_DEPENDENCIES).forEach(([nextId, prevIds]) => {
-    const next = byId[nextId];
-    if (!next) return;
-    const a = byId[String(prevIds[0])];
-    const b = byId[String(prevIds[1])];
+    const next = byId[nextId]; if(!next) return;
+    const a = byId[String(prevIds[0])]; const b = byId[String(prevIds[1])];
     const isThirdPlace = String(nextId) === '103';
     const teamA = isThirdPlace ? wc26ResolvedLoser(a) : wc26ResolvedWinner(a);
     const teamB = isThirdPlace ? wc26ResolvedLoser(b) : wc26ResolvedWinner(b);
-    if (teamA) next.team1 = teamA;
-    if (teamB) next.team2 = teamB;
+    if(teamA) next.team1 = teamA;
+    if(teamB) next.team2 = teamB;
   });
   return matches;
 }
 
 mergeApiEvents = function(base, apiEvents, now=new Date()){
   const matches = cloneMatches(base);
+  let matched = 0;
   for (const ev of apiEvents) {
     const pk = pairKey(ev.teamA, ev.teamB);
     const m = matches.find(x => isRealMatch(x) && pairKey(x.team1,x.team2) === pk);
     if (!m) continue;
+    matched += 1;
     const aIsTeam1 = key(m.team1) === key(ev.teamA);
     m.score_team1 = aIsTeam1 ? ev.scoreA : ev.scoreB;
     m.score_team2 = aIsTeam1 ? ev.scoreB : ev.scoreA;
@@ -176,5 +152,6 @@ mergeApiEvents = function(base, apiEvents, now=new Date()){
     m.status = st;
     m.source = 'ESPN';
   }
+  wc26ApiStats.matched = matched;
   return wc26ApplyKnockoutProgression(matches);
 };
