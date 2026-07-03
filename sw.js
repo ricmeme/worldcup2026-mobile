@@ -1,4 +1,8 @@
-const CACHE = 'worldcup2026-mobile-v4';
+const CACHE = 'worldcup2026-mobile-v5';
+
+// Cachear sólo archivos críticos que existen con seguridad en el repo.
+// No cacheamos banderas PNG porque la app móvil usa emojis robustos como banderas;
+// si un PNG falta, cache.addAll() rechaza toda la instalación del service worker.
 const ASSETS = [
   './',
   './index.html',
@@ -9,69 +13,47 @@ const ASSETS = [
   './favicon.png',
   './data/schedule.json',
   './data/worldcup2026_schedule_clt.csv',
+  './icons/icon-72.png',
+  './icons/icon-96.png',
   './icons/icon-128.png',
   './icons/icon-144.png',
   './icons/icon-152.png',
   './icons/icon-180.png',
   './icons/icon-192.png',
   './icons/icon-384.png',
-  './icons/icon-512.png',
-  './icons/icon-72.png',
-  './icons/icon-96.png',
-  './data/flags/ar.png',
-  './data/flags/at.png',
-  './data/flags/au.png',
-  './data/flags/ba.png',
-  './data/flags/be.png',
-  './data/flags/br.png',
-  './data/flags/ca.png',
-  './data/flags/cd.png',
-  './data/flags/ch.png',
-  './data/flags/ci.png',
-  './data/flags/co.png',
-  './data/flags/cv.png',
-  './data/flags/cw.png',
-  './data/flags/cz.png',
-  './data/flags/de.png',
-  './data/flags/dz.png',
-  './data/flags/ec.png',
-  './data/flags/eg.png',
-  './data/flags/es.png',
-  './data/flags/fr.png',
-  './data/flags/gb-eng.png',
-  './data/flags/gb-sct.png',
-  './data/flags/gh.png',
-  './data/flags/hr.png',
-  './data/flags/ht.png',
-  './data/flags/iq.png',
-  './data/flags/ir.png',
-  './data/flags/jo.png',
-  './data/flags/jp.png',
-  './data/flags/kr.png',
-  './data/flags/ma.png',
-  './data/flags/mx.png',
-  './data/flags/nl.png',
-  './data/flags/no.png',
-  './data/flags/nz.png',
-  './data/flags/pa.png',
-  './data/flags/pt.png',
-  './data/flags/py.png',
-  './data/flags/qa.png',
-  './data/flags/sa.png',
-  './data/flags/se.png',
-  './data/flags/sn.png',
-  './data/flags/tn.png',
-  './data/flags/tr.png',
-  './data/flags/us.png',
-  './data/flags/uy.png',
-  './data/flags/uz.png',
-  './data/flags/za.png'
+  './icons/icon-512.png'
 ];
 
-self.addEventListener('install', e=>{ e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)).then(()=>self.skipWaiting())); });
-self.addEventListener('activate', e=>{ e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())); });
-self.addEventListener('fetch', e=>{
-  const url = new URL(e.request.url);
-  if(url.hostname.includes('espn.com')) return; // red primero para marcadores.
-  e.respondWith(caches.match(e.request).then(cached=>cached || fetch(e.request).then(res=>{ const copy=res.clone(); caches.open(CACHE).then(c=>c.put(e.request,copy)); return res; }).catch(()=>cached)));
+self.addEventListener('install', event => {
+  event.waitUntil(
+    caches.open(CACHE)
+      .then(cache => cache.addAll(ASSETS))
+      .then(() => self.skipWaiting())
+  );
+});
+
+self.addEventListener('activate', event => {
+  event.waitUntil(
+    caches.keys()
+      .then(keys => Promise.all(keys.filter(key => key !== CACHE).map(key => caches.delete(key))))
+      .then(() => self.clients.claim())
+  );
+});
+
+self.addEventListener('fetch', event => {
+  const url = new URL(event.request.url);
+
+  // ESPN debe ir a red primero para marcadores en vivo.
+  if (url.hostname.includes('espn.com')) return;
+
+  event.respondWith(
+    caches.match(event.request).then(cached => {
+      if (cached) return cached;
+      return fetch(event.request).then(response => {
+        const copy = response.clone();
+        caches.open(CACHE).then(cache => cache.put(event.request, copy));
+        return response;
+      }).catch(() => cached);
+    })
+  );
 });
