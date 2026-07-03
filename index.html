@@ -119,13 +119,22 @@
           <label class="switch-line"><input id="notifyGoalsCheck" type="checkbox" /> Avisar goles</label>
           <label class="switch-line"><input id="notifyStartCheck" type="checkbox" /> Avisar inicio de partido</label>
           <label class="switch-line"><input id="notifyEndCheck" type="checkbox" /> Avisar final de partido</label>
-          <label>Sonido de gol</label>
+          <label>Estilo de relato de gol</label>
           <select id="goalSoundSelect">
             <option value="latam">Relato latino intenso</option>
             <option value="estadio">Grito de estadio</option>
             <option value="radial">Estilo radial chileno</option>
             <option value="neutro">Neutro corto</option>
           </select>
+          <label>Voz masculina</label>
+          <select id="maleVoiceProfileSelect">
+            <option value="auto">Automática masculina en español</option>
+            <option value="latam">Masculina latinoamericana</option>
+            <option value="chile">Masculina Chile si existe</option>
+            <option value="mexico">Masculina México si existe</option>
+            <option value="espana">Masculina España si existe</option>
+          </select>
+          <p id="maleVoiceHint" class="muted"></p>
           <label class="switch-line"><input id="keepAwakeCheck" type="checkbox" /> Mantener pantalla activa mientras la app esté abierta</label>
           <p id="notificationSupportText" class="muted"></p>
           <button id="testNotificationBtn" class="secondary wide">Probar notificación</button>
@@ -151,5 +160,6 @@
   <script src="app.js"></script>
   <script src="mobile-fixes.js"></script>
   <script src="mobile-notifications.js"></script>
+  <script src="mobile-voice-male.js"></script>
 </body>
 </html>
