@@ -1,8 +1,5 @@
-const CACHE = 'worldcup2026-mobile-v8';
+const CACHE = 'worldcup2026-mobile-v9';
 
-// Cachear sólo archivos críticos que existen con seguridad en el repo.
-// No cacheamos banderas PNG porque la app móvil usa emojis robustos como banderas;
-// si un PNG falta, cache.addAll() rechaza toda la instalación del service worker.
 const ASSETS = [
   './',
   './index.html',
@@ -10,6 +7,7 @@ const ASSETS = [
   './app.js',
   './mobile-fixes.js',
   './mobile-notifications.js',
+  './mobile-voice-male.js',
   './manifest.webmanifest',
   './favicon.png',
   './data/schedule.json',
@@ -43,10 +41,7 @@ self.addEventListener('activate', event => {
 
 self.addEventListener('fetch', event => {
   const url = new URL(event.request.url);
-
-  // ESPN debe ir a red primero para marcadores en vivo.
   if (url.hostname.includes('espn.com')) return;
-
   event.respondWith(
     caches.match(event.request).then(cached => {
       if (cached) return cached;
@@ -55,19 +50,6 @@ self.addEventListener('fetch', event => {
         caches.open(CACHE).then(cache => cache.put(event.request, copy));
         return response;
       }).catch(() => cached);
-    })
-  );
-});
-
-self.addEventListener('notificationclick', event => {
-  event.notification.close();
-  const targetUrl = event.notification.data?.url || './index.html';
-  event.waitUntil(
-    clients.matchAll({type:'window', includeUncontrolled:true}).then(clientList => {
-      for (const client of clientList) {
-        if ('focus' in client) return client.focus();
-      }
-      if (clients.openWindow) return clients.openWindow(targetUrl);
     })
   );
 });
