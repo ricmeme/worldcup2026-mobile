@@ -87,19 +87,19 @@ function wc26DateRange(startDash, endDash){
 fetchEspnWindow = async function(){
   const today = new Date();
   const todayDash = wc26YmdDash(today);
-  const knockoutStart = '2026-06-28';
-  const knockoutEnd = '2026-07-19';
+  const tournamentStart = '2026-06-11';
+  const tournamentEnd = '2026-07-19';
   let fromDash;
   let toDash;
 
-  if (!wc26HistoricalHydrated && todayDash >= knockoutStart) {
-    fromDash = knockoutStart;
+  if (!wc26HistoricalHydrated && todayDash >= tournamentStart) {
+    fromDash = tournamentStart;
     const plus8 = wc26YmdDash(addDays(today, 8));
-    toDash = plus8 > knockoutEnd ? knockoutEnd : plus8;
+    toDash = plus8 > tournamentEnd ? tournamentEnd : plus8;
   } else {
     fromDash = wc26YmdDash(addDays(today, -2));
     const plus8 = wc26YmdDash(addDays(today, 8));
-    toDash = plus8 > knockoutEnd ? knockoutEnd : plus8;
+    toDash = plus8 > tournamentEnd ? tournamentEnd : plus8;
   }
 
   const dates = wc26DateRange(fromDash, toDash);
