@@ -8,158 +8,26 @@
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="icon" href="favicon.png" />
   <link rel="apple-touch-icon" href="icons/icon-180.png" />
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css?v=10" />
 </head>
 <body>
   <div class="app-shell">
-    <header class="topbar">
-      <div class="brand">
-        <img src="icons/icon-72.png" alt="" />
-        <div>
-          <h1>WorldCup 2026</h1>
-          <p>Celular · Hora Chile</p>
-        </div>
-      </div>
-      <button id="installBtn" class="ghost hidden">Instalar</button>
-    </header>
-
-    <section class="status-card">
-      <div class="status-row">
-        <span id="apiStatus" class="pill warn">API: pendiente</span>
-        <span id="liveStatus" class="pill">En vivo: 0</span>
-        <span id="refreshStatus" class="pill">Refresh: manual</span>
-      </div>
-      <div class="status-row small">
-        <span>Último intento: <b id="lastAttempt">-</b></span>
-        <span>Último OK: <b id="lastOk">-</b></span>
-      </div>
-      <div class="actions-row">
-        <button id="refreshBtn" class="primary">Actualizar ahora</button>
-        <button id="shareBtn" class="secondary">Compartir</button>
-      </div>
-    </section>
-
-    <nav class="tabs" aria-label="Secciones">
-      <button class="tab active" data-tab="today">Hoy</button>
-      <button class="tab" data-tab="fixture">Fixture</button>
-      <button class="tab" data-tab="bracket">Bracket</button>
-      <button class="tab" data-tab="route">Ruta</button>
-      <button class="tab" data-tab="settings">Ajustes</button>
-    </nav>
-
+    <header class="topbar"><div class="brand"><img src="icons/icon-72.png" alt="" /><div><h1>WorldCup 2026</h1><p>Celular · Hora Chile</p></div></div><button id="installBtn" class="ghost hidden">Instalar</button></header>
+    <section class="status-card"><div class="status-row"><span id="apiStatus" class="pill warn">API: pendiente</span><span id="liveStatus" class="pill">En vivo: 0</span><span id="refreshStatus" class="pill">Refresh: manual</span></div><div class="status-row small"><span>Último intento: <b id="lastAttempt">-</b></span><span>Último OK: <b id="lastOk">-</b></span></div><div class="actions-row"><button id="refreshBtn" class="primary">Actualizar ahora</button><button id="shareBtn" class="secondary">Compartir</button></div></section>
+    <nav class="tabs" aria-label="Secciones"><button class="tab active" data-tab="today">Hoy</button><button class="tab" data-tab="fixture">Fixture</button><button class="tab" data-tab="bracket">Bracket</button><button class="tab" data-tab="route">Ruta</button><button class="tab" data-tab="settings">Ajustes</button></nav>
     <main>
-      <section id="today" class="panel active">
-        <div class="section-head">
-          <h2>Vista rápida de hoy</h2>
-          <span id="todayDate" class="muted"></span>
-        </div>
-        <div id="todayCards" class="cards"></div>
-        <div class="section-head mt">
-          <h2>Últimos 5 eventos registrados</h2>
-          <span class="muted">orden cronológico</span>
-        </div>
-        <div id="eventsList" class="events"></div>
-      </section>
-
-      <section id="fixture" class="panel">
-        <div class="filters">
-          <input id="searchInput" type="search" placeholder="Buscar país, ciudad, fase..." />
-          <div class="filter-grid">
-            <select id="dateFilter"><option value="">Todas las fechas</option></select>
-            <select id="teamFilter"><option value="">Todos los equipos</option></select>
-            <select id="stageFilter"><option value="">Todas las fases</option></select>
-          </div>
-          <label class="switch-line"><input id="onlyFavoriteCheck" type="checkbox" /> Sólo favorito</label>
-        </div>
-        <div id="matchList" class="match-list"></div>
-      </section>
-
-      <section id="bracket" class="panel">
-        <div class="section-head">
-          <h2>Bracket</h2>
-          <span id="bracketInfo" class="muted">Actualizado automáticamente</span>
-        </div>
-        <div class="round-tabs" id="roundTabs"></div>
-        <div id="bracketScroller" class="bracket-scroller">
-          <div id="bracketBoard" class="bracket-board"></div>
-        </div>
-      </section>
-
-      <section id="route" class="panel">
-        <div class="section-head">
-          <h2>Ruta al título</h2>
-          <span class="muted">según bracket actual</span>
-        </div>
-        <select id="routeTeam"></select>
-        <div id="routeList" class="route-list"></div>
-      </section>
-
-      <section id="settings" class="panel">
-        <div class="settings-card">
-          <h2>Ajustes</h2>
-          <label>Equipo favorito</label>
-          <select id="favoriteTeam"></select>
-          <label class="switch-line"><input id="noSpoilersCheck" type="checkbox" /> Modo sin spoilers</label>
-          <label class="switch-line"><input id="favoriteAlertsCheck" type="checkbox" /> Alertas sólo de mi favorito</label>
-          <label>Intervalo de actualización</label>
-          <select id="refreshInterval">
-            <option value="1000">1 segundo</option>
-            <option value="2000">2 segundos</option>
-            <option value="3000">3 segundos</option>
-            <option value="5000">5 segundos</option>
-            <option value="10000">10 segundos</option>
-            <option value="15000">15 segundos</option>
-            <option value="30000">30 segundos</option>
-            <option value="60000">60 segundos</option>
-            <option value="0">Manual</option>
-          </select>
-
-          <h2 class="mt">Notificaciones Android</h2>
-          <label class="switch-line"><input id="notificationsCheck" type="checkbox" /> Habilitar notificaciones emergentes</label>
-          <label class="switch-line"><input id="notifyGoalsCheck" type="checkbox" /> Avisar goles</label>
-          <label class="switch-line"><input id="notifyStartCheck" type="checkbox" /> Avisar inicio de partido</label>
-          <label class="switch-line"><input id="notifyEndCheck" type="checkbox" /> Avisar final de partido</label>
-          <label>Estilo de relato de gol</label>
-          <select id="goalSoundSelect">
-            <option value="latam">Relato latino intenso</option>
-            <option value="estadio">Grito de estadio</option>
-            <option value="radial">Estilo radial chileno</option>
-            <option value="neutro">Neutro corto</option>
-          </select>
-          <label>Voz masculina</label>
-          <select id="maleVoiceProfileSelect">
-            <option value="auto">Automática masculina en español</option>
-            <option value="latam">Masculina latinoamericana</option>
-            <option value="chile">Masculina Chile si existe</option>
-            <option value="mexico">Masculina México si existe</option>
-            <option value="espana">Masculina España si existe</option>
-          </select>
-          <p id="maleVoiceHint" class="muted"></p>
-          <label class="switch-line"><input id="keepAwakeCheck" type="checkbox" /> Mantener pantalla activa mientras la app esté abierta</label>
-          <p id="notificationSupportText" class="muted"></p>
-          <button id="testNotificationBtn" class="secondary wide">Probar notificación</button>
-          <button id="testGoalSoundBtn" class="secondary wide">Probar sonido de gol</button>
-
-          <button id="exportIcsBtn" class="primary wide">Exportar calendario .ics</button>
-          <button id="clearCacheBtn" class="secondary wide">Limpiar cache local</button>
-        </div>
-        <div class="help-card">
-          <h3>Instalación en Samsung S21 Ultra</h3>
-          <p>Abre esta web en Chrome, toca ⋮ y usa <b>Agregar a pantalla principal</b>. Queda como app instalada.</p>
-        </div>
-      </section>
+      <section id="today" class="panel active"><div class="section-head"><h2>Vista rápida de hoy</h2><span id="todayDate" class="muted"></span></div><div id="todayCards" class="cards"></div><div class="section-head mt"><h2>Últimos 5 eventos registrados</h2><span class="muted">orden cronológico</span></div><div id="eventsList" class="events"></div></section>
+      <section id="fixture" class="panel"><div class="filters"><input id="searchInput" type="search" placeholder="Buscar país, ciudad, fase..." /><div class="filter-grid"><select id="dateFilter"><option value="">Todas las fechas</option></select><select id="teamFilter"><option value="">Todos los equipos</option></select><select id="stageFilter"><option value="">Todas las fases</option></select></div><label class="switch-line"><input id="onlyFavoriteCheck" type="checkbox" /> Sólo favorito</label></div><div id="matchList" class="match-list"></div></section>
+      <section id="bracket" class="panel"><div class="section-head"><h2>Bracket</h2><span id="bracketInfo" class="muted">Actualizado automáticamente</span></div><div class="round-tabs" id="roundTabs"></div><div id="bracketScroller" class="bracket-scroller"><div id="bracketBoard" class="bracket-board"></div></div></section>
+      <section id="route" class="panel"><div class="section-head"><h2>Ruta al título</h2><span class="muted">según bracket actual</span></div><select id="routeTeam"></select><div id="routeList" class="route-list"></div></section>
+      <section id="settings" class="panel"><div class="settings-card"><h2>Ajustes</h2><label>Equipo favorito</label><select id="favoriteTeam"></select><label class="switch-line"><input id="noSpoilersCheck" type="checkbox" /> Modo sin spoilers</label><label class="switch-line"><input id="favoriteAlertsCheck" type="checkbox" /> Alertas sólo de mi favorito</label><label>Intervalo de actualización</label><select id="refreshInterval"><option value="1000">1 segundo</option><option value="2000">2 segundos</option><option value="3000">3 segundos</option><option value="5000">5 segundos</option><option value="10000">10 segundos</option><option value="15000">15 segundos</option><option value="30000">30 segundos</option><option value="60000">60 segundos</option><option value="0">Manual</option></select><h2 class="mt">Notificaciones Android</h2><label class="switch-line"><input id="notificationsCheck" type="checkbox" /> Habilitar notificaciones emergentes</label><label class="switch-line"><input id="notifyGoalsCheck" type="checkbox" /> Avisar goles</label><label class="switch-line"><input id="notifyStartCheck" type="checkbox" /> Avisar inicio de partido</label><label class="switch-line"><input id="notifyEndCheck" type="checkbox" /> Avisar final de partido</label><label>Estilo de relato de gol</label><select id="goalSoundSelect"><option value="latam">Relato latino intenso</option><option value="estadio">Grito de estadio</option><option value="radial">Estilo radial chileno</option><option value="neutro">Neutro corto</option></select><label>Voz masculina</label><select id="maleVoiceProfileSelect"><option value="auto">Automática masculina en español</option><option value="latam">Masculina latinoamericana</option><option value="chile">Masculina Chile si existe</option><option value="mexico">Masculina México si existe</option><option value="espana">Masculina España si existe</option></select><p id="maleVoiceHint" class="muted"></p><label class="switch-line"><input id="keepAwakeCheck" type="checkbox" /> Mantener pantalla activa mientras la app esté abierta</label><p id="notificationSupportText" class="muted"></p><button id="testNotificationBtn" class="secondary wide">Probar notificación</button><button id="testGoalSoundBtn" class="secondary wide">Probar sonido de gol</button><button id="exportIcsBtn" class="primary wide">Exportar calendario .ics</button><button id="clearCacheBtn" class="secondary wide">Limpiar cache local</button></div><div class="help-card"><h3>Instalación en Samsung S21 Ultra</h3><p>Abre esta web en Chrome, toca ⋮ y usa <b>Agregar a pantalla principal</b>. Queda como app instalada.</p></div></section>
     </main>
   </div>
-
-  <dialog id="matchDialog" class="dialog">
-    <div id="matchDialogContent"></div>
-    <button id="closeDialog" class="primary wide">Cerrar</button>
-  </dialog>
-
+  <dialog id="matchDialog" class="dialog"><div id="matchDialogContent"></div><button id="closeDialog" class="primary wide">Cerrar</button></dialog>
   <script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js"));}</script>
-  <script src="app.js"></script>
-  <script src="mobile-fixes.js"></script>
-  <script src="mobile-notifications.js"></script>
-  <script src="mobile-voice-male.js"></script>
+  <script src="app.js?v=10"></script>
+  <script src="mobile-fixes.js?v=10"></script>
+  <script src="mobile-notifications.js?v=10"></script>
+  <script src="mobile-voice-male.js?v=10"></script>
 </body>
 </html>
