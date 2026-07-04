@@ -1,4 +1,4 @@
-/* Patches móviles: banderas robustas, bracket filtrado y resultados históricos. */
+/* Patches móviles: banderas robustas, bracket filtrado, estado pasado y resultados ESPN parciales. */
 const WC26_FLAG_EMOJI = {
   'Alemania':'🇩🇪','Arabia Saudí':'🇸🇦','Argelia':'🇩🇿','Argentina':'🇦🇷','Australia':'🇦🇺','Austria':'🇦🇹',
   'Bosnia y Herzegovina':'🇧🇦','Brasil':'🇧🇷','Bélgica':'🇧🇪','Cabo Verde':'🇨🇻','Canadá':'🇨🇦','Catar':'🇶🇦',
@@ -11,29 +11,42 @@ const WC26_FLAG_EMOJI = {
 };
 
 let wc26HistoricalHydrated = false;
-let wc26ApiStats = {range:'-', events:0, matched:0};
+let wc26ApiStats = {range:'-', events:0, matched:0, okDates:0, failedDates:0, failedSample:''};
 const wc26OriginalUpdateStatus = updateStatus;
+const wc26OriginalNormalizeStatus = normalizeStatus;
 
 (function injectMobileFixStyles(){
-  const css = `.flag-emoji{width:24px;height:18px;display:inline-flex;align-items:center;justify-content:center;font-size:18px;line-height:1;filter:saturate(1.1)}.selected-round{width:min(86vw,360px)}.bracket-board{min-width:0}.round-col.selected-round{max-width:100%}`;
+  const css = `.flag-emoji{width:24px;height:18px;display:inline-flex;align-items:center;justify-content:center;font-size:18px;line-height:1;filter:saturate(1.1)}.selected-round{width:min(86vw,360px)}.bracket-board{min-width:0}.round-col.selected-round{max-width:100%}.status.unknown{background:#4b3b12;color:#ffe08a}`;
   const style = document.createElement('style');
   style.textContent = css;
   document.head.appendChild(style);
 })();
+
+normalizeStatus = function(raw, m, now=new Date()){
+  const st = wc26OriginalNormalizeStatus(raw, m, now);
+  if(st === 'scheduled' && isRealMatch(m)){
+    const kickoff = cltDateTime(m).getTime();
+    const minutesFromKick = (now.getTime() - kickoff) / 60000;
+    const s1 = scoreShown(m.score_team1);
+    const s2 = scoreShown(m.score_team2);
+    if(minutesFromKick > 240 && s1 === '-' && s2 === '-') return 'unknown';
+  }
+  return st;
+};
+
+statusPillClass = function(st){ return st==='live'?'status live':st==='final'?'status final':st==='unknown'?'status unknown':'status'; };
 
 updateStatus = function(){
   wc26OriginalUpdateStatus();
   const api = $('apiStatus');
   if(api && state.dataSource === 'ESPN'){
     api.textContent = `API: ESPN · ${wc26ApiStats.matched}/${wc26ApiStats.events}`;
-    api.title = `Eventos ESPN leídos: ${wc26ApiStats.events}; partidos del fixture actualizados: ${wc26ApiStats.matched}; rango: ${wc26ApiStats.range}`;
+    api.title = `Eventos ESPN leídos: ${wc26ApiStats.events}; partidos actualizados: ${wc26ApiStats.matched}; fechas OK: ${wc26ApiStats.okDates}; fechas fallidas: ${wc26ApiStats.failedDates}; rango: ${wc26ApiStats.range}; fallas: ${wc26ApiStats.failedSample}`;
     if(wc26ApiStats.events > 0 && wc26ApiStats.matched === 0) api.className = 'pill warn';
   }
 };
 
-function wc26FlagEmoji(team){
-  return WC26_FLAG_EMOJI[clean(team)] || '';
-}
+function wc26FlagEmoji(team){ return WC26_FLAG_EMOJI[clean(team)] || ''; }
 
 renderTeam = function(team){
   const emoji = wc26FlagEmoji(team);
@@ -64,23 +77,11 @@ normalizeEspnEvent = function(ev){
   return {teamA, teamB, scoreA:clean(a.score || '-'), scoreB:clean(b.score || '-'), rawStatus, completed:!!st.completed, winnerTeam:winnerRaw, loserTeam:loserRaw, date:ev.date};
 };
 
-function wc26DateToYmd(date){
-  const y = date.getFullYear();
-  const m = String(date.getMonth()+1).padStart(2,'0');
-  const d = String(date.getDate()).padStart(2,'0');
-  return `${y}${m}${d}`;
-}
-function wc26YmdDash(date){
-  const y = date.getFullYear();
-  const m = String(date.getMonth()+1).padStart(2,'0');
-  const d = String(date.getDate()).padStart(2,'0');
-  return `${y}-${m}-${d}`;
-}
+function wc26DateToYmd(date){ const y=date.getFullYear(); const m=String(date.getMonth()+1).padStart(2,'0'); const d=String(date.getDate()).padStart(2,'0'); return `${y}${m}${d}`; }
+function wc26YmdDash(date){ const y=date.getFullYear(); const m=String(date.getMonth()+1).padStart(2,'0'); const d=String(date.getDate()).padStart(2,'0'); return `${y}-${m}-${d}`; }
 function wc26DateRange(startDash, endDash){
-  const out = [];
-  const start = new Date(`${startDash}T12:00:00-04:00`);
-  const end = new Date(`${endDash}T12:00:00-04:00`);
-  for (let d = new Date(start); d <= end; d.setDate(d.getDate()+1)) out.push(wc26DateToYmd(d));
+  const out=[]; const start=new Date(`${startDash}T12:00:00-04:00`); const end=new Date(`${endDash}T12:00:00-04:00`);
+  for(let d=new Date(start); d<=end; d.setDate(d.getDate()+1)) out.push(wc26DateToYmd(d));
   return out;
 }
 
@@ -89,8 +90,7 @@ fetchEspnWindow = async function(){
   const todayDash = wc26YmdDash(today);
   const tournamentStart = '2026-06-11';
   const tournamentEnd = '2026-07-19';
-  let fromDash;
-  let toDash;
+  let fromDash, toDash;
   if (!wc26HistoricalHydrated && todayDash >= tournamentStart) {
     fromDash = tournamentStart;
     const plus8 = wc26YmdDash(addDays(today, 8));
@@ -102,16 +102,29 @@ fetchEspnWindow = async function(){
   }
   const dates = wc26DateRange(fromDash, toDash);
   const events = [];
+  let okDates = 0;
+  let failedDates = 0;
+  const failed = [];
   for (const d of dates) {
-    const url = `https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard?dates=${d}`;
-    const res = await fetch(url, {cache:'no-store'});
-    if (!res.ok) throw new Error(`ESPN HTTP ${res.status}`);
-    const data = await res.json();
-    (data.events || []).forEach(ev => events.push(ev));
+    try {
+      const url = `https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard?dates=${d}`;
+      const res = await fetch(url, {cache:'no-store'});
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+      okDates += 1;
+      (data.events || []).forEach(ev => events.push(ev));
+    } catch(err) {
+      failedDates += 1;
+      if(failed.length < 3) failed.push(`${d}:${err && err.message ? err.message : 'error'}`);
+    }
   }
   wc26HistoricalHydrated = true;
   wc26ApiStats.range = `${fromDash} → ${toDash}`;
   wc26ApiStats.events = events.length;
+  wc26ApiStats.okDates = okDates;
+  wc26ApiStats.failedDates = failedDates;
+  wc26ApiStats.failedSample = failed.join(', ');
+  if(events.length === 0 && okDates === 0) throw new Error(`ESPN sin fechas OK; fallidas=${failedDates}; ${wc26ApiStats.failedSample}`);
   return events.map(normalizeEspnEvent).filter(Boolean);
 };
 
@@ -148,8 +161,7 @@ mergeApiEvents = function(base, apiEvents, now=new Date()){
     m.api_status = ev.completed ? 'final' : ev.rawStatus;
     m.api_winner = ev.winnerTeam || '';
     m.api_loser = ev.loserTeam || '';
-    const st = normalizeStatus(m.api_status, m, now);
-    m.status = st;
+    m.status = normalizeStatus(m.api_status, m, now);
     m.source = 'ESPN';
   }
   wc26ApiStats.matched = matched;
