@@ -1,4 +1,4 @@
-const CACHE = 'worldcup2026-mobile-v11';
+const CACHE = 'worldcup2026-mobile-v13';
 const ASSETS = [
   './data/schedule.json',
   './data/worldcup2026_schedule_clt.csv',
@@ -14,7 +14,7 @@ const ASSETS = [
   './icons/icon-384.png',
   './icons/icon-512.png'
 ];
-const NETWORK_FIRST = ['/', '/index.html', '/styles.css', '/app.js', '/mobile-fixes.js', '/mobile-notifications.js', '/mobile-voice-male.js'];
+const NETWORK_FIRST = ['/', '/index.html', '/styles.css', '/app.js', '/mobile-fixes.js', '/mobile-notifications.js', '/mobile-voice-male.js', '/worldcup2026-mobile/', '/worldcup2026-mobile/index.html', '/worldcup2026-mobile/styles.css', '/worldcup2026-mobile/app.js', '/worldcup2026-mobile/mobile-fixes.js', '/worldcup2026-mobile/mobile-notifications.js', '/worldcup2026-mobile/mobile-voice-male.js'];
 
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(ASSETS)).then(() => self.skipWaiting()));
